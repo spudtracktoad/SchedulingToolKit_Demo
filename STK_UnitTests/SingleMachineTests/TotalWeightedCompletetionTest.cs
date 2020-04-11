@@ -115,6 +115,23 @@ namespace STK_UnitTests
 
         }
 
+        [Test]
+        public void TestSingleMachinePChain()
+        {
+            TWeightedCompletionJobs job1 = new TWeightedCompletionJobs(3, 2, DateTime.Now, DateTime.Now.AddDays(3));
+            TWeightedCompletionJobs job2 = new TWeightedCompletionJobs(5, 2, DateTime.Now, DateTime.Now.AddDays(3));
+            TWeightedCompletionJobs job3 = new TWeightedCompletionJobs(6, 4, DateTime.Now, DateTime.Now.AddDays(3));
+            TWeightedCompletionJobs job4 = new TWeightedCompletionJobs(4, 5, DateTime.Now, DateTime.Now.AddDays(3));
+            TWeightedCompletionJobs job5 = new TWeightedCompletionJobs(4, 5, DateTime.Now, DateTime.Now.AddDays(3));
+
+            job1.SetPreviousJob(job3);
+            job1.SetPreviousJob(job5);
+            job2.SetPreviousJob(job4);
+
+
+
+        }
+
         #region Helper Functions
         private List<TWeightedCompletionJobs> buildJobList(int numberOfJobs)
         {

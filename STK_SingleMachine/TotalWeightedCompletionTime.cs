@@ -5,8 +5,14 @@ using SchedulingToolKit;
 
 namespace STK_SingleMachine
 {
+    class PresidenceChain
+    {
+        List<BaseMachineJob> chain = new List<BaseMachineJob>();
+    }
+
     public class TotalWeightedCompletionTime
     {
+        List<PresidenceChain> presidenceChains = new List<PresidenceChain>();
         public List<TWeightedCompletionJobs> machineJobsList { get; } = new List<TWeightedCompletionJobs>();
         //public List<MachineJob> scheduledMachineJob { get; private set; } = new List<MachineJob>();
 
@@ -22,6 +28,10 @@ namespace STK_SingleMachine
 
             return machineJobsList;
         }
+
+        #region Private
+
+        #endregion
 
     }
 }
