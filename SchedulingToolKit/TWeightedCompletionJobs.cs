@@ -4,11 +4,8 @@ using System.Text;
 
 namespace SchedulingToolKit
 {
-    public class TWeightedCompletionJobs : BaseMachineJob, IPrecidenceChain
+    public class TWeightedCompletionJobs : BaseMachineJob
     {
-        private List<BaseMachineJob> precidenceChain = new List<BaseMachineJob>();
-        private double pFactor;
-
         public TWeightedCompletionJobs(int weight, int processingTime, DateTime release, DateTime due)
         {
             JobID = Guid.NewGuid();
@@ -18,27 +15,5 @@ namespace SchedulingToolKit
             DueDate = due;
         }
 
-        #region IPrecidenceChain
-        public List<BaseMachineJob> GetPrecidenceChain()
-        {
-            return precidenceChain;
-        }
-
-        public double GetPFactor()
-        {
-            return pFactor;
-        }
-
-        public void SetPFactor(double Factor)
-        {
-            pFactor = Factor;
-        }
-
-        public void SetPreviousJob(BaseMachineJob job)
-        {
-            precidenceChain.Add(job);
-        }
-
-        #endregion
     }
 }

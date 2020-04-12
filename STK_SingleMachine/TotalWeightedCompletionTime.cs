@@ -5,15 +5,10 @@ using SchedulingToolKit;
 
 namespace STK_SingleMachine
 {
-    class PresidenceChain
+    public class TotalWeightedCompletionTime : IPrecedenceChain
     {
-        List<BaseMachineJob> chain = new List<BaseMachineJob>();
-    }
-
-    public class TotalWeightedCompletionTime
-    {
-        List<PresidenceChain> presidenceChains = new List<PresidenceChain>();
         public List<TWeightedCompletionJobs> machineJobsList { get; } = new List<TWeightedCompletionJobs>();
+
         //public List<MachineJob> scheduledMachineJob { get; private set; } = new List<MachineJob>();
 
         public List<TWeightedCompletionJobs> ScheduleJobsWithoutPresidence()
@@ -25,9 +20,27 @@ namespace STK_SingleMachine
 
         public List<TWeightedCompletionJobs> ScheduleJobsWithPresidence()
         {
-
+            //While jobs need to be scheduled
+            //foreach chain
+                // calculate the pFactor
+            //add the chain with the highets pFactor to the machineJobList
             return machineJobsList;
         }
+
+
+        #region Interface
+
+        public void SetJobPrecedence(BaseMachineJob jobA, BaseMachineJob jobB)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<BaseMachineJob> GetPrecidenceChain(BaseMachineJob machineJob)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
 
         #region Private
 

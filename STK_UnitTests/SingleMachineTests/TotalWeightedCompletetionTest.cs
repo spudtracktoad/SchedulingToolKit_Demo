@@ -72,64 +72,22 @@ namespace STK_UnitTests
         }
 
         [Test]
-        public void SetSinglePreviousJob()
+        public void BuildPrecedenceChain()
         {
             TWeightedCompletionJobs job1 = new TWeightedCompletionJobs(3, 2, DateTime.Now, DateTime.Now.AddDays(3));
-            TWeightedCompletionJobs job2 = new TWeightedCompletionJobs(5, 2, DateTime.Now, DateTime.Now.AddDays(3));
-            job1.SetPreviousJob(job2);
+            TWeightedCompletionJobs job2 = new TWeightedCompletionJobs(7, 4, DateTime.Now, DateTime.Now.AddDays(3));
+            TWeightedCompletionJobs job3 = new TWeightedCompletionJobs(2, 5, DateTime.Now, DateTime.Now.AddDays(3));
+            TWeightedCompletionJobs job4 = new TWeightedCompletionJobs(6, 3, DateTime.Now, DateTime.Now.AddDays(3));
+            _totalWeightedCompletionTime.machineJobsList.Add(job1);
+            _totalWeightedCompletionTime.machineJobsList.Add(job2);
+            _totalWeightedCompletionTime.machineJobsList.Add(job3);
+            _totalWeightedCompletionTime.machineJobsList.Add(job4);
 
-            Assert.IsTrue(job1.GetPrecidenceChain().Count == 1);
-            Assert.AreEqual(job1.GetPrecidenceChain().FirstOrDefault(), job2);
+            _totalWeightedCompletionTime.SetJobPrecedence(job3, job2);
 
-        }
+            var job3First = _totalWeightedCompletionTime.GetPrecidenceChain(job2);
 
-        [Test]
-        public void SetMultiplePreviousJob()
-        {
-            TWeightedCompletionJobs job1 = new TWeightedCompletionJobs(3, 2, DateTime.Now, DateTime.Now.AddDays(3));
-            var length = 3;
-            var previousJobs = buildJobList(length);
-            foreach (var item in previousJobs)
-            {
-                job1.SetPreviousJob(item);
-            }
-
-            Assert.IsTrue(job1.GetPrecidenceChain().Count == length);
-
-            foreach (var item in job1.GetPrecidenceChain())
-            {
-                Assert.IsTrue(previousJobs.Contains(item));
-            }
-
-        }
-
-        [Test]
-        public void TestPFactor()
-        {
-            TWeightedCompletionJobs job1 = new TWeightedCompletionJobs(3, 2, DateTime.Now, DateTime.Now.AddDays(3));
-            var testPFactor = 3.5;
-
-            job1.SetPFactor(testPFactor);
-
-            Assert.AreEqual(job1.GetPFactor(), testPFactor, .01);
-
-        }
-
-        [Test]
-        public void TestSingleMachinePChain()
-        {
-            TWeightedCompletionJobs job1 = new TWeightedCompletionJobs(3, 2, DateTime.Now, DateTime.Now.AddDays(3));
-            TWeightedCompletionJobs job2 = new TWeightedCompletionJobs(5, 2, DateTime.Now, DateTime.Now.AddDays(3));
-            TWeightedCompletionJobs job3 = new TWeightedCompletionJobs(6, 4, DateTime.Now, DateTime.Now.AddDays(3));
-            TWeightedCompletionJobs job4 = new TWeightedCompletionJobs(4, 5, DateTime.Now, DateTime.Now.AddDays(3));
-            TWeightedCompletionJobs job5 = new TWeightedCompletionJobs(4, 5, DateTime.Now, DateTime.Now.AddDays(3));
-
-            job1.SetPreviousJob(job3);
-            job1.SetPreviousJob(job5);
-            job2.SetPreviousJob(job4);
-
-
-
+            Assert.IsTrue(job3First.FirstOrDefault() == job3);
         }
 
         #region Helper Functions
