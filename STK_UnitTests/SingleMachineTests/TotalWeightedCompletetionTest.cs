@@ -23,9 +23,9 @@ namespace STK_UnitTests
         public void AddSingleMachineToTotalWeightedCompletionTime()
         {
             TWeightedCompletionJobs job1 = new TWeightedCompletionJobs(3, 2, DateTime.Now, DateTime.Now.AddDays(3));
-            _totalWeightedCompletionTime.machineJobsList.Add(job1);
+            _totalWeightedCompletionTime.Add(job1);
 
-            Assert.IsTrue(_totalWeightedCompletionTime.machineJobsList.Count == 1);
+            Assert.IsTrue(_totalWeightedCompletionTime.Count == 1);
         }
 
         [Test]
@@ -33,14 +33,14 @@ namespace STK_UnitTests
         {
             TWeightedCompletionJobs job1 = new TWeightedCompletionJobs(3, 2, DateTime.Now, DateTime.Now.AddDays(3));
             TWeightedCompletionJobs job2 = new TWeightedCompletionJobs(3, 2, DateTime.Now, DateTime.Now.AddDays(3));
-            _totalWeightedCompletionTime.machineJobsList.Add(job1);
-            _totalWeightedCompletionTime.machineJobsList.Add(job2);
+            _totalWeightedCompletionTime.Add(job1);
+            _totalWeightedCompletionTime.Add(job2);
 
-            Assert.IsTrue(_totalWeightedCompletionTime.machineJobsList.Count == 2);
+            Assert.IsTrue(_totalWeightedCompletionTime.Count == 2);
 
-            _totalWeightedCompletionTime.machineJobsList.Remove(job2);
+            _totalWeightedCompletionTime.Remove(job2);
 
-            Assert.IsTrue(_totalWeightedCompletionTime.machineJobsList.Count == 1);
+            Assert.IsTrue(_totalWeightedCompletionTime.Count == 1);
         }
 
         [Test]
@@ -48,8 +48,8 @@ namespace STK_UnitTests
         {
             TWeightedCompletionJobs job1 = new TWeightedCompletionJobs(3, 2, DateTime.Now, DateTime.Now.AddDays(3));
             TWeightedCompletionJobs job2 = new TWeightedCompletionJobs(5, 2, DateTime.Now, DateTime.Now.AddDays(3));
-            _totalWeightedCompletionTime.machineJobsList.Add(job1);
-            _totalWeightedCompletionTime.machineJobsList.Add(job2);
+            _totalWeightedCompletionTime.Add(job1);
+            _totalWeightedCompletionTime.Add(job2);
 
             Assert.AreEqual(job2, _totalWeightedCompletionTime.ScheduleJobsWithoutPresidence().FirstOrDefault());
         }
@@ -59,14 +59,14 @@ namespace STK_UnitTests
         {
             foreach (var item in buildJobList(500))
             {
-                _totalWeightedCompletionTime.machineJobsList.Add(item);
+                _totalWeightedCompletionTime.Add(item);
             }
 
             _totalWeightedCompletionTime.ScheduleJobsWithoutPresidence();
 
-            for(int index = 0; index < _totalWeightedCompletionTime.machineJobsList.Count-1; index++)
+            for(int index = 0; index < _totalWeightedCompletionTime.Count-1; index++)
             {
-                Assert.IsTrue(_totalWeightedCompletionTime.machineJobsList[index].WeightedProcessingTime >= _totalWeightedCompletionTime.machineJobsList[index + 1].WeightedProcessingTime);
+                Assert.IsTrue(_totalWeightedCompletionTime[index].WeightedProcessingTime >= _totalWeightedCompletionTime[index + 1].WeightedProcessingTime);
             }
 
         }
@@ -78,10 +78,10 @@ namespace STK_UnitTests
             TWeightedCompletionJobs job2 = new TWeightedCompletionJobs(7, 4, DateTime.Now, DateTime.Now.AddDays(3));
             TWeightedCompletionJobs job3 = new TWeightedCompletionJobs(2, 5, DateTime.Now, DateTime.Now.AddDays(3));
             TWeightedCompletionJobs job4 = new TWeightedCompletionJobs(6, 3, DateTime.Now, DateTime.Now.AddDays(3));
-            _totalWeightedCompletionTime.machineJobsList.Add(job1);
-            _totalWeightedCompletionTime.machineJobsList.Add(job2);
-            _totalWeightedCompletionTime.machineJobsList.Add(job3);
-            _totalWeightedCompletionTime.machineJobsList.Add(job4);
+            _totalWeightedCompletionTime.Add(job1);
+            _totalWeightedCompletionTime.Add(job2);
+            _totalWeightedCompletionTime.Add(job3);
+            _totalWeightedCompletionTime.Add(job4);
 
             _totalWeightedCompletionTime.SetJobPrecedence(job3, job2);
 

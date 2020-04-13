@@ -5,12 +5,14 @@ using SchedulingToolKit;
 
 namespace STK_SingleMachine
 {
-    public class TotalWeightedCompletionTime : IPrecedenceChain
+    public class TotalWeightedCompletionTime : IPrecedenceChain, IBaseJobList
     {
-        public List<TWeightedCompletionJobs> machineJobsList { get; } = new List<TWeightedCompletionJobs>();
+        private List<List<BaseMachineJob>> precedenceChainsList = new List<List<BaseMachineJob>>();
+
+        private List<TWeightedCompletionJobs> machineJobsList { get; } = new List<TWeightedCompletionJobs>();
 
         //public List<MachineJob> scheduledMachineJob { get; private set; } = new List<MachineJob>();
-
+        #region public 
         public List<TWeightedCompletionJobs> ScheduleJobsWithoutPresidence()
         {
             machineJobsList.Sort((x, y) => y.WeightedProcessingTime.CompareTo(x.WeightedProcessingTime));
@@ -27,23 +29,56 @@ namespace STK_SingleMachine
             return machineJobsList;
         }
 
+        #endregion
+
 
         #region Interface
 
         public void SetJobPrecedence(BaseMachineJob jobA, BaseMachineJob jobB)
         {
-            throw new NotImplementedException();
+            TWeightedCompletionJobs TWeigthJobB = (TWeightedCompletionJobs)jobB;
+            TWeigthJobB.AddPredecesor(jobA);
+            updatePrecedenceChains();
         }
 
         public List<BaseMachineJob> GetPrecidenceChain(BaseMachineJob machineJob)
         {
-            throw new NotImplementedException();
+            if (machineJobsList.Contains((TWeightedCompletionJobs)machineJob))
+            {
+                return ((TWeightedCompletionJobs)machineJob).GetPredecesorJobs();
+            }
+            return new List<BaseMachineJob>();
         }
 
-        #endregion
+        public BaseMachineJob this[int index] { get => machineJobsList[index]; set => machineJobsList[index] = (TWeightedCompletionJobs)value; }
+
+        public void Add(BaseMachineJob newJob)
+        {
+            machineJobsList.Add((TWeightedCompletionJobs)newJob);
+        }
+        public void Add(TWeightedCompletionJobs newJob)
+        {
+            machineJobsList.Add(newJob);
+        }
+
+        public void Remove(BaseMachineJob job)
+        {
+            machineJobsList.Remove((TWeightedCompletionJobs)job);
+        }
+
+        public int Count
+        {
+            get { return machineJobsList.Count; }
+        }
+        
+        #endregion 
 
         #region Private
-
+        
+        private void updatePrecedenceChains()
+        {
+            //do some stuff here......
+        }
         #endregion
 
     }
