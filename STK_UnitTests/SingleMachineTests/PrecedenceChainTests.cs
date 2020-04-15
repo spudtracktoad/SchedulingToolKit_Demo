@@ -38,6 +38,18 @@ namespace STK_UnitTests.SingleMachineTests
             Assert.IsTrue(_precedenceChain.Count == 4);
         }
 
+        [Test]
+        public void addSingleJobWithPrecedence()
+        {
+            MachineJob job1 = new MachineJob(3, 4);
+            MachineJob job2 = new MachineJob(4, 3);
+
+            job2.Add(job1);
+
+
+        }
+
+
 
         #region helper Functions
         private List<BaseJob> buildRandomjobs(int number)

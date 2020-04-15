@@ -25,7 +25,7 @@ namespace SchedulingToolKit
         public void Add(BaseJob value)
         {
             var newJob = (MachineJob)value;
-            if (_count == 0)
+            if ((_count == 0) && (newJob.Count ==0))
             {
                 var tmpList = new List<BaseJob>();
                 tmpList.Add(newJob);
@@ -33,7 +33,7 @@ namespace SchedulingToolKit
                 _count++;
                 return;
             }
-            if(!Contains(value))
+            if(!Contains(value) && (newJob.Count == 0))
             {
                 var tmpList = new List<BaseJob>();
                 tmpList.Add(newJob);
