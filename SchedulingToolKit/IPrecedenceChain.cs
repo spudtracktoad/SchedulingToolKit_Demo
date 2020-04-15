@@ -7,16 +7,35 @@ namespace SchedulingToolKit
     public interface IPrecedenceChain
     {
         /// <summary>
-        /// jobA comes before jobB
+        /// Adds the job to the precedence chain
         /// </summary>
-        /// <param name="jobA"></param>
-        /// <param name="jobB"></param>
-        void SetJobPrecedence(BaseMachineJob jobA, BaseMachineJob jobB);
+        /// <param name="value"></param>
+        /// <returns></returns>
+        void Add(BaseJob value);
+
         /// <summary>
-        /// Get the precedence chain of machineJob
+        /// removes all jobs from the chain
+        /// </summary>
+        void Clear();
+
+        /// <summary>
+        /// returns true if the job is in a precedence chain
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        bool Contains(BaseJob value);
+
+        /// <summary>
+        /// removes the precedence chain for the give job
         /// </summary>
         /// <param name="machineJob"></param>
         /// <returns></returns>
-        List<BaseMachineJob> GetPrecidenceChain(BaseMachineJob machineJob);
+        bool Remove(BaseJob value);
+        
+        /// <summary>
+        /// returns the number of chains in the class
+        /// </summary>
+        int Count { get; }
+
     }
 }

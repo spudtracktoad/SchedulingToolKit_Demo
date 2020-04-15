@@ -7,10 +7,10 @@ namespace SchedulingToolKit
 {
     public interface IBaseJobList
     {
-        void Add(BaseMachineJob job);
-        void Remove(BaseMachineJob job);
+        void Add(BaseJob job);
+        void Remove(BaseJob job);
         int Count{ get; }
-        BaseMachineJob this[int index]
+        BaseJob this[int index]
         {
             get;
             set;

@@ -19,10 +19,12 @@ namespace STK_UnitTests
             _totalWeightedCompletionTime = new TotalWeightedCompletionTime();
         }
 
+        #region Scheduling test
+
         [Test]
         public void AddSingleMachineToTotalWeightedCompletionTime()
         {
-            TWeightedCompletionJobs job1 = new TWeightedCompletionJobs(3, 2, DateTime.Now, DateTime.Now.AddDays(3));
+            MachineJob job1 = new MachineJob(3, 2, DateTime.Now, DateTime.Now.AddDays(3));
             _totalWeightedCompletionTime.Add(job1);
 
             Assert.IsTrue(_totalWeightedCompletionTime.Count == 1);
@@ -31,8 +33,8 @@ namespace STK_UnitTests
         [Test]
         public void RemoveSingleMachineToTotalWeightedCompletionTime()
         {
-            TWeightedCompletionJobs job1 = new TWeightedCompletionJobs(3, 2, DateTime.Now, DateTime.Now.AddDays(3));
-            TWeightedCompletionJobs job2 = new TWeightedCompletionJobs(3, 2, DateTime.Now, DateTime.Now.AddDays(3));
+            MachineJob job1 = new MachineJob(3, 2, DateTime.Now, DateTime.Now.AddDays(3));
+            MachineJob job2 = new MachineJob(3, 2, DateTime.Now, DateTime.Now.AddDays(3));
             _totalWeightedCompletionTime.Add(job1);
             _totalWeightedCompletionTime.Add(job2);
 
@@ -46,8 +48,8 @@ namespace STK_UnitTests
         [Test]
         public void ScheduleTotalWeightedCompletionTimeNoPresedence()
         {
-            TWeightedCompletionJobs job1 = new TWeightedCompletionJobs(3, 2, DateTime.Now, DateTime.Now.AddDays(3));
-            TWeightedCompletionJobs job2 = new TWeightedCompletionJobs(5, 2, DateTime.Now, DateTime.Now.AddDays(3));
+            MachineJob job1 = new MachineJob(3, 2, DateTime.Now, DateTime.Now.AddDays(3));
+            MachineJob job2 = new MachineJob(5, 2, DateTime.Now, DateTime.Now.AddDays(3));
             _totalWeightedCompletionTime.Add(job1);
             _totalWeightedCompletionTime.Add(job2);
 
@@ -71,36 +73,19 @@ namespace STK_UnitTests
 
         }
 
-        [Test]
-        public void BuildPrecedenceChain()
-        {
-            TWeightedCompletionJobs job1 = new TWeightedCompletionJobs(3, 2, DateTime.Now, DateTime.Now.AddDays(3));
-            TWeightedCompletionJobs job2 = new TWeightedCompletionJobs(7, 4, DateTime.Now, DateTime.Now.AddDays(3));
-            TWeightedCompletionJobs job3 = new TWeightedCompletionJobs(2, 5, DateTime.Now, DateTime.Now.AddDays(3));
-            TWeightedCompletionJobs job4 = new TWeightedCompletionJobs(6, 3, DateTime.Now, DateTime.Now.AddDays(3));
-            _totalWeightedCompletionTime.Add(job1);
-            _totalWeightedCompletionTime.Add(job2);
-            _totalWeightedCompletionTime.Add(job3);
-            _totalWeightedCompletionTime.Add(job4);
-
-            _totalWeightedCompletionTime.SetJobPrecedence(job3, job2);
-
-            var job3First = _totalWeightedCompletionTime.GetPrecidenceChain(job2);
-
-            Assert.IsTrue(job3First.FirstOrDefault() == job3);
-        }
+        #endregion
 
         #region Helper Functions
-        private List<TWeightedCompletionJobs> buildJobList(int numberOfJobs)
+        private List<MachineJob> buildJobList(int numberOfJobs)
         {
-            List<TWeightedCompletionJobs> result = new List<TWeightedCompletionJobs>();
+            List<MachineJob> result = new List<MachineJob>();
             for(int index = 0; index < numberOfJobs; index++)
             {
                 var rand = new Random();
                 var rand2 = new Random();
                 var randWeight = rand.Next();
                 var randProces = rand2.Next();
-                TWeightedCompletionJobs randJob = new TWeightedCompletionJobs(randWeight, randProces, DateTime.Now, DateTime.Now.AddDays(4));
+                MachineJob randJob = new MachineJob(randWeight, randProces, DateTime.Now, DateTime.Now.AddDays(4));
                 result.Add(randJob);
             }
             return result;

@@ -5,28 +5,29 @@ using SchedulingToolKit;
 
 namespace STK_SingleMachine
 {
-    public class TotalWeightedCompletionTime : IPrecedenceChain, IBaseJobList
+    public class TotalWeightedCompletionTime : IBaseJobList
     {
-        private List<List<BaseMachineJob>> precedenceChainsList = new List<List<BaseMachineJob>>();
+        private List<List<BaseJob>> precedenceChainsList = new List<List<BaseJob>>();
 
-        private List<TWeightedCompletionJobs> machineJobsList { get; } = new List<TWeightedCompletionJobs>();
+        private List<MachineJob> unscheduledJobList = new List<MachineJob>();
+        private List<MachineJob> scheduledJobList = new List<MachineJob>();
 
         //public List<MachineJob> scheduledMachineJob { get; private set; } = new List<MachineJob>();
         #region public 
-        public List<TWeightedCompletionJobs> ScheduleJobsWithoutPresidence()
+        public List<MachineJob> ScheduleJobsWithoutPresidence()
         {
-            machineJobsList.Sort((x, y) => y.WeightedProcessingTime.CompareTo(x.WeightedProcessingTime));
+            unscheduledJobList.Sort((x, y) => y.WeightedProcessingTime.CompareTo(x.WeightedProcessingTime));
 
-            return machineJobsList;
+            return unscheduledJobList;
         }
 
-        public List<TWeightedCompletionJobs> ScheduleJobsWithPresidence()
+        public List<MachineJob> ScheduleJobsWithPresidence()
         {
             //While jobs need to be scheduled
             //foreach chain
                 // calculate the pFactor
             //add the chain with the highets pFactor to the machineJobList
-            return machineJobsList;
+            return unscheduledJobList;
         }
 
         #endregion
@@ -34,51 +35,32 @@ namespace STK_SingleMachine
 
         #region Interface
 
-        public void SetJobPrecedence(BaseMachineJob jobA, BaseMachineJob jobB)
+        public BaseJob this[int index] { get => unscheduledJobList[index]; set => unscheduledJobList[index] = (MachineJob)value; }
+
+        public void Add(BaseJob newJob)
         {
-            TWeightedCompletionJobs TWeigthJobB = (TWeightedCompletionJobs)jobB;
-            TWeigthJobB.AddPredecesor(jobA);
-            updatePrecedenceChains();
+
+            unscheduledJobList.Add((MachineJob)newJob);
+        }
+        public void Add(MachineJob newJob)
+        {
+            unscheduledJobList.Add(newJob);
         }
 
-        public List<BaseMachineJob> GetPrecidenceChain(BaseMachineJob machineJob)
+        public void Remove(BaseJob job)
         {
-            if (machineJobsList.Contains((TWeightedCompletionJobs)machineJob))
-            {
-                return ((TWeightedCompletionJobs)machineJob).GetPredecesorJobs();
-            }
-            return new List<BaseMachineJob>();
-        }
-
-        public BaseMachineJob this[int index] { get => machineJobsList[index]; set => machineJobsList[index] = (TWeightedCompletionJobs)value; }
-
-        public void Add(BaseMachineJob newJob)
-        {
-            machineJobsList.Add((TWeightedCompletionJobs)newJob);
-        }
-        public void Add(TWeightedCompletionJobs newJob)
-        {
-            machineJobsList.Add(newJob);
-        }
-
-        public void Remove(BaseMachineJob job)
-        {
-            machineJobsList.Remove((TWeightedCompletionJobs)job);
+            unscheduledJobList.Remove((MachineJob)job);
         }
 
         public int Count
         {
-            get { return machineJobsList.Count; }
+            get { return unscheduledJobList.Count; }
         }
         
         #endregion 
 
         #region Private
-        
-        private void updatePrecedenceChains()
-        {
-            //do some stuff here......
-        }
+ 
         #endregion
 
     }
