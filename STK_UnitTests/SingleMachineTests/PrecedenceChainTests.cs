@@ -67,7 +67,6 @@ namespace STK_UnitTests.SingleMachineTests
 
             job2.Add(job1);
             job2.Add(job4);
-            job1.Add(job3);
             List<BaseJob> tmpjobList = new List<BaseJob>();
             tmpjobList.Add(job2);
             tmpjobList.Add(job1);
@@ -76,8 +75,8 @@ namespace STK_UnitTests.SingleMachineTests
 
             _precedenceChain = new PrecedenceChain(tmpjobList);
 
-            Assert.IsTrue(_precedenceChain.ChainCount == 1);
-            Assert.IsTrue(_precedenceChain.JobCount == 2);
+            Assert.IsTrue(_precedenceChain.ChainCount == 3);
+            Assert.IsTrue(_precedenceChain.JobCount == 5);
         }
 
 
