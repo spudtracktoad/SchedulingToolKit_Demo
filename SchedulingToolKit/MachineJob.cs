@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SchedulingToolKit
 {
-    public class MachineJob : BaseJob, IPrecedenceChain
+    public class MachineJob : BaseJob
     {
         private List<BaseJob> _predecesorJobs = new List<BaseJob>();
 
@@ -16,6 +16,16 @@ namespace SchedulingToolKit
             ProcessTime = processingTime;
             RelaseDate = DateTime.Now;
             DueDate = DateTime.Now.AddDays(1);
+        }
+
+        public MachineJob(int weight, int processingTime, string name)
+        {
+            JobID = Guid.NewGuid();
+            Weight = weight;
+            ProcessTime = processingTime;
+            RelaseDate = DateTime.Now;
+            DueDate = DateTime.Now.AddDays(1);
+            JobName = name;
         }
 
         public MachineJob(int weight, int processingTime, List<BaseJob> predecesors)
