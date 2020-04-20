@@ -6,9 +6,9 @@ using SchedulingToolKit;
 
 namespace STK_SingleMachine
 {
-    public class TotalWeightedCompletionTime : IBaseJobList
+    public class TotalWeightedCompletionTime : IBaseJobList, IPrecedenceChain
     {
-        private List<MachineJob> scheduledJobList = new List<MachineJob>();
+        private PrecedenceChainCollection PrecedenceColleciton = new PrecedenceChainCollection();
 
         private List<MachineJob> unscheduledJobList = new List<MachineJob>();
 
@@ -37,10 +37,14 @@ namespace STK_SingleMachine
 
         public BaseJob this[int index] { get => unscheduledJobList[index]; set => unscheduledJobList[index] = (MachineJob)value; }
 
+        PrecedenceChain IPrecedenceChain.this[int index] { get => PrecedenceColleciton[index]; set => PrecedenceColleciton[index] = value; }
+
         public void Add(BaseJob newJob)
         {
             unscheduledJobList.Add((MachineJob)newJob);
         }
+
+
         public void Add(MachineJob newJob)
         {
             unscheduledJobList.Add(newJob);
@@ -53,7 +57,7 @@ namespace STK_SingleMachine
 
         public void Clear()
         {
-            scheduledJobList.Clear();
+            PrecedenceColleciton.Clear();
             unscheduledJobList.Clear();
         }
 
@@ -62,10 +66,26 @@ namespace STK_SingleMachine
             return unscheduledJobList.Contains((MachineJob)value);
         }
 
+        public void Add(PrecedenceChain chain)
+        {
+            PrecedenceColleciton.Add(chain);
+        }
+
+        public void Remove(PrecedenceChain chain)
+        {
+            PrecedenceColleciton.Remove(chain);
+        }
+
+        public bool Contains(PrecedenceChain value)
+        {
+            return PrecedenceColleciton.Contains(value);
+        }
+
         public int Count
         {
             get { return unscheduledJobList.Count; }
         }
+
 
         #endregion
 
