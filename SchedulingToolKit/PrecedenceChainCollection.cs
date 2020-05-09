@@ -11,7 +11,7 @@ namespace SchedulingToolKit
 
         #region List Interface
 
-        public PrecedenceChain this[int index] { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public PrecedenceChain this[int index] { get => _chains[index]; set => _chains[index] = value; }
 
         public int Count => _chains.Count;
 

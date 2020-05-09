@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using SchedulingToolKit;
 
@@ -12,7 +13,7 @@ namespace STK_SingleMachine
 
         private List<MachineJob> unscheduledJobList = new List<MachineJob>();
 
-        //public List<MachineJob> scheduledMachineJob { get; private set; } = new List<MachineJob>();
+        public List<MachineJob> scheduledJobList { get; private set; } = new List<MachineJob>();
         #region public 
         public List<MachineJob> ScheduleJobsWithoutPresidence()
         {
@@ -24,10 +25,17 @@ namespace STK_SingleMachine
         public List<MachineJob> ScheduleJobsWithPresidence()
         {
             //While jobs need to be scheduled
-            //foreach chain
-                // calculate the pFactor
-            //add the chain with the highets pFactor to the machineJobList
-            return unscheduledJobList;
+            while(PrecedenceColleciton.Count>0)
+            {
+                //Find the chain with the highest pFactor
+                var nextChain = FindHighestPfactorChain();
+                //add chain to schedule list
+                foreach (var item in nextChain)
+                {
+                    scheduledJobList.Add(item);
+                }
+            }
+            return scheduledJobList;
         }
 
         #endregion
@@ -86,10 +94,76 @@ namespace STK_SingleMachine
             get { return unscheduledJobList.Count; }
         }
 
+        public int ChainCount
+        {
+            get { return PrecedenceColleciton.Count; }
+        }
+
 
         #endregion
 
         #region Private
+
+        private List<MachineJob> FindHighestPfactorChain()
+        {
+            var result = new List<MachineJob>();
+            List<List<MachineJob>> tmpMachineJobs = new List<List<MachineJob>>();
+
+            foreach (var item in PrecedenceColleciton)
+            {
+                var tmpPfactor = item.Pop();
+                List<MachineJob> tmp = new List<MachineJob>();
+                tmp.Add((MachineJob)tmpPfactor);
+                tmpMachineJobs.Add(tmp);
+            }
+
+            double max = 0;
+            int resultChainIndex = -1;
+            for(int index = 0; index < tmpMachineJobs.Count; index++)
+            {
+                for (int jndex = 0; jndex < tmpMachineJobs[index].Count; jndex++)
+                {
+                    if (max == tmpMachineJobs[index][jndex].WeightedProcessingTime)
+                    {
+                        double nextMax = max;
+                        for (int nextChain = 0; nextChain < tmpMachineJobs.Count; nextChain++)
+                        {
+                            for(int nextJob = 0; nextJob < tmpMachineJobs[nextChain].Count; nextJob++)
+                            {
+                                if (max == tmpMachineJobs[nextChain][nextJob].WeightedProcessingTime && nextMax >= tmpMachineJobs[nextChain][nextJob].WeightedProcessingTime)
+                                {
+                                    var tmpJob = PrecedenceColleciton[nextChain].Pop();
+                                    tmpMachineJobs[nextChain].Add((MachineJob)tmpJob);
+                                    if(nextMax < tmpJob.WeightedProcessingTime)
+                                    {
+                                        nextMax = tmpJob.WeightedProcessingTime;
+                                        resultChainIndex = nextChain;
+                                    }
+                                }
+                            }
+                        }
+                        max = nextMax;
+                    }
+                    if(max < tmpMachineJobs[index][jndex].WeightedProcessingTime)
+                    {
+                        max = tmpMachineJobs[index][jndex].WeightedProcessingTime;
+                        resultChainIndex = index;
+                    }
+                }
+
+            }
+            result = new List<MachineJob>(tmpMachineJobs[resultChainIndex]);
+            tmpMachineJobs[resultChainIndex].Clear();
+
+            for (int i = 0; i < tmpMachineJobs[i].Count; i++)
+            {
+                foreach (var item in tmpMachineJobs[i])
+                {
+                    PrecedenceColleciton[i].Push(item);
+                }
+            }
+            return result;
+        }
 
         #endregion
 

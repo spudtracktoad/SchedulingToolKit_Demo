@@ -19,7 +19,7 @@ namespace SchedulingToolKit
 
         public bool Scheduled { get; set; }
 
-        public double WeightedProcessingTime => Weight / ProcessTime;
+        public double WeightedProcessingTime => (double)Weight / (double)ProcessTime;
         #endregion
 
     }
