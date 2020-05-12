@@ -5,68 +5,34 @@ using System.Text;
 
 namespace SchedulingToolKit
 {
-    public class PrecedenceChainCollection : IList<PrecedenceChain>
+    public class PrecedenceChainCollection
     {
         private List<PrecedenceChain> _chains = new List<PrecedenceChain>();
-
-        #region List Interface
-
-        public PrecedenceChain this[int index] { get => _chains[index]; set => _chains[index] = value; }
-
-        public int Count => _chains.Count;
-
-        public bool IsReadOnly => false;
-
-        public void Add(PrecedenceChain item)
+        
+        public void AddChain(PrecedenceChain chain)
         {
-            _chains.Add(item);
+            _chains.Add(chain);
         }
 
-        public void Clear()
+        public void clear()
         {
             _chains.Clear();
+            sortChains();
         }
 
-        public bool Contains(PrecedenceChain item)
+        public List<BaseJob> GetNextScheduableJob()
         {
-            return _chains.Contains(item); ;
+            List<BaseJob> result = _chains[0].NextJob;
+            sortChains();
+
+            return result;
         }
 
-        public void CopyTo(PrecedenceChain[] array, int arrayIndex)
+
+        private void sortChains()
         {
-            _chains.CopyTo(array, arrayIndex);
+
         }
 
-        public IEnumerator<PrecedenceChain> GetEnumerator()
-        {
-            return _chains.GetEnumerator();
-        }
-
-        public int IndexOf(PrecedenceChain item)
-        {
-            return _chains.IndexOf(item);
-        }
-
-        public void Insert(int index, PrecedenceChain item)
-        {
-            _chains.Insert(index, item);
-        }
-
-        public bool Remove(PrecedenceChain item)
-        {
-            return _chains.Remove(item);
-        }
-
-        public void RemoveAt(int index)
-        {
-            _chains.RemoveAt(index);
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return _chains.GetEnumerator();
-        }
-
-        #endregion
     }
 }

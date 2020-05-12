@@ -22,18 +22,20 @@ namespace STK_SingleMachine
             return unscheduledJobList;
         }
 
+        //Needs work 9May2020 will come back to this
         public List<MachineJob> ScheduleJobsWithPresidence()
         {
+            throw new NotImplementedException();
             //While jobs need to be scheduled
             while(PrecedenceColleciton.Count>0)
             {
                 //Find the chain with the highest pFactor
-                var nextChain = FindHighestPfactorChain();
-                //add chain to schedule list
-                foreach (var item in nextChain)
-                {
-                    scheduledJobList.Add(item);
-                }
+                //var nextChain = FindHighestPfactorChain();
+                ////add chain to schedule list
+                //foreach (var item in nextChain)
+                //{
+                //    scheduledJobList.Add(item);
+                //}
             }
             return scheduledJobList;
         }
@@ -104,66 +106,66 @@ namespace STK_SingleMachine
 
         #region Private
 
-        private List<MachineJob> FindHighestPfactorChain()
-        {
-            var result = new List<MachineJob>();
-            List<List<MachineJob>> tmpMachineJobs = new List<List<MachineJob>>();
+        //private List<MachineJob> FindHighestPfactorChain()
+        //{
+        //    var result = new List<MachineJob>();
+        //    List<List<MachineJob>> tmpMachineJobs = new List<List<MachineJob>>();
 
-            foreach (var item in PrecedenceColleciton)
-            {
-                var tmpPfactor = item.Pop();
-                List<MachineJob> tmp = new List<MachineJob>();
-                tmp.Add((MachineJob)tmpPfactor);
-                tmpMachineJobs.Add(tmp);
-            }
+        //    foreach (var item in PrecedenceColleciton)
+        //    {
+        //        var tmpPfactor = item.Pop();
+        //        List<MachineJob> tmp = new List<MachineJob>();
+        //        tmp.Add((MachineJob)tmpPfactor);
+        //        tmpMachineJobs.Add(tmp);
+        //    }
 
-            double max = 0;
-            int resultChainIndex = -1;
-            for(int index = 0; index < tmpMachineJobs.Count; index++)
-            {
-                for (int jndex = 0; jndex < tmpMachineJobs[index].Count; jndex++)
-                {
-                    if (max == tmpMachineJobs[index][jndex].WeightedProcessingTime)
-                    {
-                        double nextMax = max;
-                        for (int nextChain = 0; nextChain < tmpMachineJobs.Count; nextChain++)
-                        {
-                            for(int nextJob = 0; nextJob < tmpMachineJobs[nextChain].Count; nextJob++)
-                            {
-                                if (max == tmpMachineJobs[nextChain][nextJob].WeightedProcessingTime && nextMax >= tmpMachineJobs[nextChain][nextJob].WeightedProcessingTime)
-                                {
-                                    var tmpJob = PrecedenceColleciton[nextChain].Pop();
-                                    tmpMachineJobs[nextChain].Add((MachineJob)tmpJob);
-                                    if(nextMax < tmpJob.WeightedProcessingTime)
-                                    {
-                                        nextMax = tmpJob.WeightedProcessingTime;
-                                        resultChainIndex = nextChain;
-                                    }
-                                }
-                            }
-                        }
-                        max = nextMax;
-                    }
-                    if(max < tmpMachineJobs[index][jndex].WeightedProcessingTime)
-                    {
-                        max = tmpMachineJobs[index][jndex].WeightedProcessingTime;
-                        resultChainIndex = index;
-                    }
-                }
+        //    double max = 0;
+        //    int resultChainIndex = -1;
+        //    for(int index = 0; index < tmpMachineJobs.Count; index++)
+        //    {
+        //        for (int jndex = 0; jndex < tmpMachineJobs[index].Count; jndex++)
+        //        {
+        //            if (max == tmpMachineJobs[index][jndex].WeightedProcessingTime)
+        //            {
+        //                double nextMax = max;
+        //                for (int nextChain = 0; nextChain < tmpMachineJobs.Count; nextChain++)
+        //                {
+        //                    for(int nextJob = 0; nextJob < tmpMachineJobs[nextChain].Count; nextJob++)
+        //                    {
+        //                        if (max == tmpMachineJobs[nextChain][nextJob].WeightedProcessingTime && nextMax >= tmpMachineJobs[nextChain][nextJob].WeightedProcessingTime)
+        //                        {
+        //                            var tmpJob = PrecedenceColleciton[nextChain].Pop();
+        //                            tmpMachineJobs[nextChain].Add((MachineJob)tmpJob);
+        //                            if(nextMax < tmpJob.WeightedProcessingTime)
+        //                            {
+        //                                nextMax = tmpJob.WeightedProcessingTime;
+        //                                resultChainIndex = nextChain;
+        //                            }
+        //                        }
+        //                    }
+        //                }
+        //                max = nextMax;
+        //            }
+        //            if(max < tmpMachineJobs[index][jndex].WeightedProcessingTime)
+        //            {
+        //                max = tmpMachineJobs[index][jndex].WeightedProcessingTime;
+        //                resultChainIndex = index;
+        //            }
+        //        }
 
-            }
-            result = new List<MachineJob>(tmpMachineJobs[resultChainIndex]);
-            tmpMachineJobs[resultChainIndex].Clear();
+        //    }
+        //    result = new List<MachineJob>(tmpMachineJobs[resultChainIndex]);
+        //    tmpMachineJobs[resultChainIndex].Clear();
 
-            for (int i = 0; i < tmpMachineJobs[i].Count; i++)
-            {
-                foreach (var item in tmpMachineJobs[i])
-                {
-                    PrecedenceColleciton[i].Push(item);
-                }
-            }
-            return result;
-        }
+        //    for (int i = 0; i < tmpMachineJobs[i].Count; i++)
+        //    {
+        //        foreach (var item in tmpMachineJobs[i])
+        //        {
+        //            PrecedenceColleciton[i].Push(item);
+        //        }
+        //    }
+        //    return result;
+        //}
 
         #endregion
 
