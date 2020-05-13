@@ -29,6 +29,10 @@ namespace SchedulingToolKit
             get 
             {
                 double result = 0;
+                if(startIndex == _toScheduleChain.Count-1)
+                {
+                    return _toScheduleChain[startIndex].WeightedProcessingTime;
+                }
                 for(int index = startIndex; index < endIndex; index++)
                 {
                     result += _toScheduleChain[index].WeightedProcessingTime;
@@ -40,8 +44,8 @@ namespace SchedulingToolKit
         /// <summary>
         /// List of the next job(s) to be schedule
         /// </summary>
-        public List<BaseJob> NextJob 
-        { 
+        public List<BaseJob> GetNextJob
+        {
             get
             {
                 List<BaseJob> result = new List<BaseJob>();
@@ -51,10 +55,30 @@ namespace SchedulingToolKit
                 }
                 startIndex = endIndex;
                 endIndex = startIndex + 1;
+                if (endIndex > _toScheduleChain.Count)
+                    endIndex = _toScheduleChain.Count-1;
                 return result;
 
             }
         }
+
+        /// <summary>
+        /// List of the next job(s) to be schedule
+        /// </summary>
+        public List<BaseJob> PeekNextJob
+        {
+            get
+            {
+                List<BaseJob> result = new List<BaseJob>();
+                for (int index = startIndex; index < endIndex; index++)
+                {
+                    result.Add(_toScheduleChain[index]);
+                }
+                return result;
+
+            }
+        }
+
         /// <summary>
         /// Each job added must be the predesor of the previous job added.
         /// Except for the first job added which should have not predecesors
@@ -72,6 +96,13 @@ namespace SchedulingToolKit
         public void CheckNextJob()
         {
             endIndex++;
+            if (endIndex > _toScheduleChain.Count)
+                endIndex = _toScheduleChain.Count - 1;
+        }
+
+        public bool ChainComplete 
+        {
+            get {return startIndex == endIndex; }
         }
     }
 

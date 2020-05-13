@@ -7,7 +7,7 @@ using SchedulingToolKit;
 
 namespace STK_SingleMachine
 {
-    public class TotalWeightedCompletionTime : IBaseJobList, IPrecedenceChain
+    public class TotalWeightedCompletionTime : IBaseJobList//, IPrecedenceChain
     {
         private PrecedenceChainCollection PrecedenceColleciton = new PrecedenceChainCollection();
 
@@ -27,16 +27,16 @@ namespace STK_SingleMachine
         {
             throw new NotImplementedException();
             //While jobs need to be scheduled
-            while(PrecedenceColleciton.Count>0)
-            {
-                //Find the chain with the highest pFactor
-                //var nextChain = FindHighestPfactorChain();
-                ////add chain to schedule list
-                //foreach (var item in nextChain)
-                //{
-                //    scheduledJobList.Add(item);
-                //}
-            }
+            //while(PrecedenceColleciton.Count>0)
+            //{
+            //    //Find the chain with the highest pFactor
+            //    //var nextChain = FindHighestPfactorChain();
+            //    ////add chain to schedule list
+            //    //foreach (var item in nextChain)
+            //    //{
+            //    //    scheduledJobList.Add(item);
+            //    //}
+            //}
             return scheduledJobList;
         }
 
@@ -47,7 +47,7 @@ namespace STK_SingleMachine
 
         public BaseJob this[int index] { get => unscheduledJobList[index]; set => unscheduledJobList[index] = (MachineJob)value; }
 
-        PrecedenceChain IPrecedenceChain.this[int index] { get => PrecedenceColleciton[index]; set => PrecedenceColleciton[index] = value; }
+        //PrecedenceChain IPrecedenceChain.this[int index] { get => PrecedenceColleciton[index]; set => PrecedenceColleciton[index] = value; }
 
         public void Add(BaseJob newJob)
         {
@@ -67,7 +67,7 @@ namespace STK_SingleMachine
 
         public void Clear()
         {
-            PrecedenceColleciton.Clear();
+            //PrecedenceColleciton.Clear();
             unscheduledJobList.Clear();
         }
 
@@ -78,28 +78,28 @@ namespace STK_SingleMachine
 
         public void Add(PrecedenceChain chain)
         {
-            PrecedenceColleciton.Add(chain);
+            //PrecedenceColleciton.Add(chain);
         }
 
         public void Remove(PrecedenceChain chain)
         {
-            PrecedenceColleciton.Remove(chain);
+            //PrecedenceColleciton.Remove(chain);
         }
 
-        public bool Contains(PrecedenceChain value)
-        {
-            return PrecedenceColleciton.Contains(value);
-        }
+        //public bool Contains(PrecedenceChain value)
+        //{
+        //    //return PrecedenceColleciton.Contains(value);
+        //}
 
         public int Count
         {
             get { return unscheduledJobList.Count; }
         }
 
-        public int ChainCount
-        {
-            get { return PrecedenceColleciton.Count; }
-        }
+        //public int ChainCount
+        //{
+        //    get { //return PrecedenceColleciton.Count; }
+        //}
 
 
         #endregion
